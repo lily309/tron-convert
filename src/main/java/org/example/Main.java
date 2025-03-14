@@ -7,7 +7,7 @@ import org.tron.protos.contract.SmartContractOuterClass.TriggerSmartContract;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        byte[] rawHex = Hex.decodeHex("0a02aa2b2208bfdb0115837c796940d8c2859ed9325a8e01081f1289010a31747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e54726967676572536d617274436f6e747261637412540a154191e9c2524a07f519e87b5a670b7f8d1415c08a63121541353e4da7c074be2ff9e3e692eaeb1e65f0f32e102224e8afa8e8000000000000000000000000353e4da7c074be2ff9e3e692eaeb1e65f0f32e1070b781829ed932900180a8d6b907");
+        byte[] rawHex = Hex.decodeHex("0a02c9592208d722a5ee5f1e8c3a40e891d8cbd8325a72081f126e0a31747970652e676f6f676c65617069732e636f6d2f70726f746f636f6c2e54726967676572536d617274436f6e747261637412390a1541628463d7252bd289923fa98a3f6c5fae2cd3ee691215412c7c9963111905d29eb8da37d28b0f53a7bb5c2818c096b10222041249c58b70f4cad4cbd83290018084af5f");
 
         Transaction.raw raw = Transaction.raw.parseFrom(rawHex);
         TriggerSmartContract contract =
@@ -16,5 +16,8 @@ public class Main {
         System.out.println(Hex.encodeHexString(contract.getOwnerAddress().toByteArray()));
         System.out.println(Hex.encodeHexString(contract.getContractAddress().toByteArray()));
         System.out.println(Hex.encodeHexString(contract.getData().toByteArray()));
+        System.out.println(contract.getCallValue());
+        System.out.println(contract.getTokenId());
+        System.out.println(contract.getCallTokenValue());
     }
 }

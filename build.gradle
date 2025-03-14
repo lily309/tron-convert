@@ -1,19 +1,46 @@
 plugins {
     id 'java'
+    id 'com.google.protobuf' version '0.8.19'
 }
-
-group = 'org.example'
-version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    protobuf 'com.google.api.grpc:proto-google-common-protos:2.15.0'
+    implementation 'com.google.protobuf:protobuf-java:3.25.5'
+    implementation 'commons-codec:commons-codec:1.15'
 }
 
-test {
-    useJUnitPlatform()
+// 1) 在Java的 sourceSets 配置里告诉Gradle使用哪个目录存放 .proto 文件
+sourceSets {
+    main {
+        // 默认是 src/main/proto，如果你改成 src/main/protos 就在这里调整
+        proto {
+            srcDir 'src/main/protos'
+        }
+
+        java {
+            // 将编译生成的 .java 放进来，让 IDE/编译器直接识别
+            srcDir "$projectDir/build/generated/source/proto/main/java"
+            // 如果使用 gRPC，还需同时包含 grpc 目录
+            // srcDir "$projectDir/build/generated/source/proto/main/grpc"
+        }
+    }
+}
+
+protobuf {
+    // 2) 指定 protoc 版本
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.25.5"
+    }
+
+    // 3) 如果需要自定义编译参数或启用gRPC插件，可在 generateProtoTasks 里做
+    generateProtoTasks {
+        all().each { task ->
+            // 这里可以访问 task.builtins, task.plugins 等
+            // 但 *不要* 调用 task.sourceSets()
+        }
+    }
 }
